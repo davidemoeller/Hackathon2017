@@ -29,13 +29,9 @@ def main():
 
     message = None
 
-    pdb.set_trace()
-
-    print(request)
-
-    if request.form['data'] == 'test':
+    if request.form.to_dict()['data'] == 'test':
         message = 'Got it!'
-    elif request.form['check-in'] == True:
+    elif request.form.to_dict()['check-in'] == True:
         message = "You have been checked in!"
 
     resp = app.make_response(message)

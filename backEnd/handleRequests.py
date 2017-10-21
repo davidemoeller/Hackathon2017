@@ -16,13 +16,25 @@ URL = 'http://192.241.193.9:3000'
 
 app = Flask(__name__)
 
-@app.route('/getInfo', methods=['POST'])
+def createDocument(obj):
+    return
+def checkIn(obj):
+    return
+def createEvent(obj):
+
+    return
+
+@app.route('/', methods=['POST'])
 def main():
 
     message = None
 
+    print("Got something!")
+
     if request.form['data'] == 'test':
         message = 'Got it!'
+    elif request.form['check-in'] == True:
+        message = "You have been checked in!"
 
     resp = app.make_response(message)
     resp.headers['Access-Control-Allow-Origin'] = '*'

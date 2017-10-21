@@ -29,6 +29,8 @@ def main():
 
     message = None
 
+    pdb.set_trace()
+
     print(request)
 
     if request.form['data'] == 'test':

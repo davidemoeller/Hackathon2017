@@ -24,12 +24,10 @@ def createEvent(obj):
 
     return
 
-@app.route('/', methods=['POST'])
+@app.route('/getInfo', methods=['POST'])
 def main():
 
     message = None
-
-    print("Got something!")
 
     if request.form['data'] == 'test':
         message = 'Got it!'

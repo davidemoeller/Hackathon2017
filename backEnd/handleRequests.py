@@ -29,6 +29,8 @@ def main():
 
     message = None
 
+    print(request)
+
     if request.form['data'] == 'test':
         message = 'Got it!'
     elif request.form['check-in'] == True:

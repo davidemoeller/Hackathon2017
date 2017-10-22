@@ -51,6 +51,7 @@ def createEvent():
 
     uid = str(uuid.uuid4())
 
+    pdb.set_trace()
     createUserEvent(invite, uid)
 
     doc = {'location': location, 'date': date, 'openWindow': open, 'description': description}

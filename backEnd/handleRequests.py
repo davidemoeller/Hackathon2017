@@ -21,7 +21,23 @@ app = Flask(__name__)
 @app.route('/getAllData')
 def getAll():
 
+    masterArray = []
+    subArray = []
 
+    files = glob.glob('/users/*')
+
+    for file in files:
+        with open(file, 'r+') as fin:
+                for line in fin:
+                    json_doc = json.loads(line)
+                    subArray.append(json_doc)
+        masterArray.append(subArray)
+
+    message = jsonify(list=masterArray)
+
+    resp = app.make_response(message)
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+    return resp
 
 @app.route('/getPersonData', methods=['POST'])
 def getPerson():
@@ -30,7 +46,7 @@ def getPerson():
 
     personData = []
 
-    with open(obj['name'] + '.jsonl', 'r+') as fin:
+    with open('users/' + obj['name'] + '.jsonl', 'r+') as fin:
         for line in fin:
             json_doc = json.loads(line)
             personData.append(json_doc)
@@ -46,7 +62,7 @@ def getEvent():
 
     obj = request.form.to_dict()
 
-    with open('events.jsonl', 'r+') as fin:
+    with open('event/events.jsonl', 'r+') as fin:
         for line in fin:
             json_doc = json.loads(line)
             if obj['uuid'] == json['uuid']:
@@ -66,7 +82,7 @@ def login():
 
     eventList = []
 
-    with open(obj['name'] + '.jsonl', 'r+') as fin:
+    with open('users/' + obj['name'] + '.jsonl', 'r+') as fin:
         for line in fin:
             json_doc = json.loads(line)
             eventList.append(json_doc['event'])
@@ -77,7 +93,7 @@ def login():
     responseList = []
 
     if len(eventList) > 0:
-        with open('events.jsonl', 'r+') as fin:
+        with open('event/events.jsonl', 'r+') as fin:
             for line in fin:
                 json_doc = json.loads(line)
                 for event in eventList:
@@ -104,7 +120,7 @@ def checkIn(obj):
 
     currentTime = datetime.datetime.now();
 
-    with open('events.jsonl', 'r+') as fin:
+    with open('event/events.jsonl', 'r+') as fin:
         for line in fin:
             json_doc = json.loads(line)
             if json_doc['uuid'] == obj['uid']:
@@ -117,10 +133,10 @@ def checkIn(obj):
 
     elif currentTime > compareTime and currenTime < endTime:
         message = obj['name'] + 'has checked in!'
-        fin = open('events.jsonl', 'r+')
+        fin = open('event/events.jsonl', 'r+')
         lines = fin.readlines()
         fin.close()
-        fout = open('events.jsonl', 'w+')
+        fout = open('event/events.jsonl', 'w+')
         for line in lines:
             json_doc = eval(line)
             if json_doc['uuid'] == obj['uid']:
@@ -132,10 +148,10 @@ def checkIn(obj):
 
     else:
         message = obj['name'] + 'missed the time window'
-        fin = open('events.jsonl', 'r+')
+        fin = open('event/events.jsonl', 'r+')
         lines = fin.readlines()
         fin.close()
-        fout = open('events.jsonl', 'w+')
+        fout = open('event/events.jsonl', 'w+')
         for line in lines:
             json_doc = eval(line)
             if json_doc['uuid'] == obj['uid']:
@@ -155,7 +171,7 @@ def createUserEvent(obj, uid):
     doc = {}
 
     for names in obj:
-        with open(names + '.jsonl', 'a') as fout:
+        with open('users/' + names + '.jsonl', 'a') as fout:
             doc['event'] = uid
             fout.write(json.dumps(doc) + '\n')
 
@@ -181,7 +197,7 @@ def createEvent():
 
     doc = {'uuid': uid, 'event':{'attendList': [], 'absentList': [], 'location': location, 'date': date, 'openWindow': openTime, 'closeWindow': closeTime, 'description': description}}
 
-    with open('events.jsonl', 'a') as fout:
+    with open('event/events.jsonl', 'a') as fout:
         fout.write(json.dumps(doc) + '\n')
 
     message = 'Event successfully created with uuid: ' + uid

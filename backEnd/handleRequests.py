@@ -52,8 +52,6 @@ def login():
 
     print(responseList)
     message = jsonify(list=responseList)
-    print(message)
-    print(eval(message))
 
     resp = app.make_response(message)
     resp.headers['Access-Control-Allow-Origin'] = '*'

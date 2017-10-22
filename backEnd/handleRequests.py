@@ -47,7 +47,7 @@ def createEvent():
     date = content['date']
     open = content['time']
     description = content['description']
-    invite = content['invite']
+    invite = eval(content['invite'])
 
     uid = str(uuid.uuid4())
 

@@ -31,10 +31,13 @@ def checkIn(obj):
 
     if currentTime < compareTime:
         message = 'Not open yet'
-        return
 
+    else:
+        message = obj['name'] + 'has checked in!'
 
-    return
+    resp = app.make_response(message)
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+    return resp
 
 def createUserEvent(obj, uid):
 
@@ -59,7 +62,7 @@ def createEvent():
     description = content['description']
     invite = eval(content['invite'])
 
-    uid = str(uuid.uuid4())
+    uid = str(uuid.uuid4()).strip('-')[0]
 
     pdb.set_trace()
     createUserEvent(invite, uid)

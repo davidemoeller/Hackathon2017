@@ -53,7 +53,7 @@ def createEvent():
 
     createUserEvent(invite, uid)
 
-    doc = {'location': location, 'date': date, 'geoArea': geo, 'openWindow': open, 'description': description}
+    doc = {'location': location, 'date': date, 'openWindow': open, 'description': description}
 
     with open('events.jsonl', 'a') as fout:
         fout.write(json.dumps(doc) + '\n')

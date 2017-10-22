@@ -17,6 +17,40 @@ URL = 'http://192.241.193.9:3000'
 
 app = Flask(__name__)
 
+@app.route('/login', methods=['POST'])
+def login(obj):
+
+    eventList = []
+
+    with open(obj['name'] + '.jsonl', 'r+') as fin:
+        for line in fin:
+            json_doc = json.loads(line)
+            eventList.append(json_doc['event'])
+
+    responseDict = {}
+    responseList = []
+
+    if len(eventList) > 0:
+        with open('events.jsonl', 'r+') as fin:
+            for event in eventList:
+                for line in fin:
+                    json_doc = json.loads(line)
+                    if event == json_doc['uuid']:
+                        responseDict['uuid'] = event
+                        loc = json_doc['loc'].split(' ')
+                        responseDict['p1'] = loc[0]
+                        responseDict['p2'] = loc[1]
+                        responseDict['p3'] = loc[2]
+                        responseDict['p4'] = loc[3]
+                        responseList.append(responseDict)
+                responseDict = {}
+
+    message = jsonify(list=responseList)
+
+    resp = app.make_response(message)
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+    return resp
+
 @app.route('/checkIn', methods=['POST'])
 def checkIn(obj):
 

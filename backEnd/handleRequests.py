@@ -38,7 +38,7 @@ def createUserEvent(obj, uid):
     return
 
 @app.route('/createEvent', methods=['POST'])
-def createEvent(obj):
+def createEvent():
 
     content = request.form.to_dict()
 
@@ -50,7 +50,7 @@ def createEvent(obj):
 
     uid = str(uuid.uuid4())
 
-    createDocument(invite, uid)
+    createUserEvent(invite, uid)
 
     doc = {'location': location, 'date': date, 'geoArea': geo, 'openWindow': open, 'description': description}
 

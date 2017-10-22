@@ -4,15 +4,54 @@
     <style>
        #map {
         height: 400px;
-        width: 100%;
+
+       }
+
+       .description{
+         height: 200px;
+         length: 400px;
+       }
+       .inviteList{
+         width: 100%;
+         padding: 400px;
        }
     </style>
-  </head>
+    </head>
   <body>
-    <h3>My Google Maps Demo</h3>
-    <div id="map"></div>
+    <h1>Create Event</h1>
+    <div style="width: 50%; float:left">
+      <input size="40" type= "text" id="description" class="textbox" type="textbox" placeholder="Event Description">
+      <form action="/action_page.php">
+        <input id="date-time" type="datetime-local" name="date-time" placeholder="Date/Time">
+      </form>
+      <input type= "text" id="inviteList" class="textbox" type="textbox" placeholder="Invite List Emails (comma separated)">
+
+    </div>
+
+    <div id="map" style="width: 50%; float:right">
+
+    </div>
+
+    <div><input id="btn" type="button" value="submit" onclick="submitNow()"/></div>
+
     <script>
+    var fence; // global
+      function submitNow() {
+        var ne = window.fence.getBounds().getNorthEast();
+        var sw = window.fence.getBounds().getSouthWest();
+        // alert(ne.lat() + " " + ne.lng() + " " + sw.lat() + " " + sw.lng());
+
+        var coords = '[' + ne.lat() + ", " + ne.lng() + ", " + sw.lat() + ", " + sw.lng() + ']';
+        var datetime = document.getElementById("date-time");
+        var time = '20:00'
+        var description = document.getElementById("document");
+        var invite = "[" + document.getElementById("inviteList") + "]";
+
+        alert(datetime + " " + description + " " + invite);
+      }
+      
       function initMap() {
+
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 10,
           center: {lat: -25.363, lng: 131.044}
@@ -22,6 +61,7 @@
           map: map
         });
         map.addListener('click', addGeoFence);
+
 
 
         // create a movable editable rectangle for event area geo fence on click
@@ -63,11 +103,14 @@
               editable: true
             });
             geoFence.setMap(map); // add to map
+            window.fence = geoFence;
             count++;
           }
+
           }
 
     }
+
     </script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATRg7QT97jEQOaNjwwtMF7o-fnxdrGIxM&callback=initMap">

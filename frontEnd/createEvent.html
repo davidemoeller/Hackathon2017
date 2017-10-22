@@ -21,19 +21,52 @@
           position: {lat: -25.363, lng: 131.044},
           map: map
         });
-        map.addEventListener('click', addGeoFence);
+        map.addListener('click', addGeoFence);
 
 
-        // create a movable editable rectangle for event area geo fence
+        // create a movable editable rectangle for event area geo fence on click
+        var count = 0;
         function addGeoFence(event) {
-          var clickLocationLat = event.latLng.lat();
-          var clickLocationLng = event.latLng.lng();
-          alert(clickLocationLat);
-          alert(clickLocationLng);
-          // var geoFence = new google.maps.Polygon({
-          //
-          // })
-        }
+          if (count == 0) {
+            var vertex1lat = event.latLng.lat();
+            var vertex1lng = event.latLng.lng();
+            var vertex2lat = vertex1lat;
+            var vertex2lng = vertex1lng + .5;
+            var vertex3lat = vertex1lat - .2;
+            var vertex3lng = vertex1lng;
+            var vertex4lat = vertex1lat - .2;
+            var vertex4lng = vertex1lng + .5;
+
+            var rectangleCoords = [
+              {lat: vertex1lat, lng: vertex1lng},
+              {lat: vertex2lat, lng: vertex2lng},
+              {lat: vertex4lat, lng: vertex4lng},
+              {lat: vertex3lat, lng: vertex3lng}
+            ];
+
+            var bounds = {
+              north: vertex1lat,
+              west: vertex1lng,
+              south: vertex1lat - .1,
+              east: vertex1lng + .2
+            };
+
+            var geoFence = new google.maps.Rectangle({
+              bounds: bounds,
+              paths: rectangleCoords,
+              strokeColor:'#2ea884',
+              strokeOpacity: 0.7,
+              strokeWeight: 2,
+              fillColor:'#2ea884',
+              fillOpacity: 0.2,
+              draggable: true,
+              editable: true
+            });
+            geoFence.setMap(map); // add to map
+            count++;
+          }
+          }
+
     }
     </script>
     <script async defer

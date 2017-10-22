@@ -6,6 +6,7 @@ import socket
 import requests
 import datetime
 import uuid
+import glob
 
 import pdb
 
@@ -16,6 +17,47 @@ from flask import jsonify
 URL = 'http://192.241.193.9:3000'
 
 app = Flask(__name__)
+
+@app.route('/getAllData')
+def getAll():
+
+
+
+@app.route('/getPersonData', methods=['POST'])
+def getPerson():
+
+    obj = request.form.to_dict()
+
+    personData = []
+
+    with open(obj['name'] + '.jsonl', 'r+') as fin:
+        for line in fin:
+            json_doc = json.loads(line)
+            personData.append(json_doc)
+
+    message = jsonify(list=personData)
+
+    resp = app.make_response(message)
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+    return resp
+
+@app.route('/getEventData', methods=['POST'])
+def getEvent():
+
+    obj = request.form.to_dict()
+
+    with open('events.jsonl', 'r+') as fin:
+        for line in fin:
+            json_doc = json.loads(line)
+            if obj['uuid'] == json['uuid']:
+                break
+
+    message = str(json_doc)
+
+    resp = app.make_response(message)
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+    return resp
+
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -66,14 +108,43 @@ def checkIn(obj):
         for line in fin:
             json_doc = json.loads(line)
             if json_doc['uuid'] == obj['uid']:
-                compareTime = eval(json_doc['event']['openWindow'])
+                compareTime = datetime.datetime.strptime(json_doc['event']['openWindow'], "%m/%d/%Y %H:%M")
+                endTime = datetime.datetime.strptime(json_doc['event']['closeWindow'], "%m/%d/%Y %H:%M")
                 break
 
     if currentTime < compareTime:
         message = 'Not open yet'
 
-    else:
+    elif currentTime > compareTime and currenTime < endTime:
         message = obj['name'] + 'has checked in!'
+        fin = open('events.jsonl', 'r+')
+        lines = fin.readlines()
+        fin.close()
+        fout = open('events.jsonl', 'w+')
+        for line in lines:
+            json_doc = eval(line)
+            if json_doc['uuid'] == obj['uid']:
+                json_doc['attendList'].append(obj['name'])
+                fout.write(str(json_doc))
+            else:
+                fout.write(str(json_doc))
+        fout.close()
+
+    else:
+        message = obj['name'] + 'missed the time window'
+        fin = open('events.jsonl', 'r+')
+        lines = fin.readlines()
+        fin.close()
+        fout = open('events.jsonl', 'w+')
+        for line in lines:
+            json_doc = eval(line)
+            if json_doc['uuid'] == obj['uid']:
+                json_doc['absentList'].append(obj['name'])
+                fout.write(str(json_doc))
+            else:
+                fout.write(str(json_doc))
+        fout.close()
+
 
     resp = app.make_response(message)
     resp.headers['Access-Control-Allow-Origin'] = '*'
@@ -97,8 +168,9 @@ def createEvent():
     print(content)
 
     location = content['loc']
-    date = datetime.datetime.strptime(content['date'], "%m/%d/%Y %H:%M")
-    openTime = content['time']
+    date = content['date']
+    openTime = content['openTime']
+    closeTime = content['closeTime']
     description = content['description']
     invite = eval(content['invite'])
 
@@ -107,7 +179,7 @@ def createEvent():
     pdb.set_trace()
     createUserEvent(invite, uid)
 
-    doc = {'uuid': uid, 'event':{'location': location, 'date': str(date), 'openWindow': openTime, 'description': description}}
+    doc = {'uuid': uid, 'event':{'attendList': [], 'absentList': [], 'location': location, 'date': date, 'openWindow': openTime, 'closeWindow': closeTime, 'description': description}}
 
     with open('events.jsonl', 'a') as fout:
         fout.write(json.dumps(doc) + '\n')

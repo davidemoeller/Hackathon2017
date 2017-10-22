@@ -26,7 +26,7 @@ def checkIn(obj):
         for line in fin:
             json_doc = json.loads(line)
             if json_doc['uuid'] == obj['uid']:
-                compareTime = json_doc['event']['openWindow']
+                compareTime = eval(json_doc['event']['openWindow'])
                 break
 
     if currentTime < compareTime:
@@ -67,7 +67,7 @@ def createEvent():
     pdb.set_trace()
     createUserEvent(invite, uid)
 
-    doc = {'uuid': uid, 'event':{'location': location, 'date': date, 'openWindow': openTime, 'description': description}}
+    doc = {'uuid': uid, 'event':{'location': location, 'date': str(date), 'openWindow': openTime, 'description': description}}
 
     with open('events.jsonl', 'a') as fout:
         fout.write(json.dumps(doc) + '\n')

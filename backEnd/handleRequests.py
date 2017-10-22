@@ -62,7 +62,7 @@ def createEvent():
     description = content['description']
     invite = eval(content['invite'])
 
-    uid = str(uuid.uuid4()).strip('-')[0]
+    uid = str(uuid.uuid4()).split('-')[0]
 
     pdb.set_trace()
     createUserEvent(invite, uid)

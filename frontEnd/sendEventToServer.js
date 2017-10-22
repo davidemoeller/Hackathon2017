@@ -15,9 +15,9 @@ $(function sendEvent(geoFence){
             coords.push(xy.lng());
           }
         }
-        var coords = '\"' + coords + '\"';
-        var date = '10/21/2017 16:30';
-        var time = '20:00' // TODO: delete
+        var coords = '72, 74, 75, 76';
+        var openWindow = '10/21/2017 16:30';
+        var closeWindow = '20:00' // TODO: delete
         var description = 'Lit smack party';
         var invite = "['Mason Hayes', 'Tommy Zarick', 'David Moeller', 'Yomali Kader', 'Bill Cosby']";
         alert(coords);
@@ -25,8 +25,8 @@ $(function sendEvent(geoFence){
             url: 'http://192.241.193.9:3001/createEvent',
             data: {
               'loc': coords,
-              'date': date,
-              'time': time,
+              'openWindow': date,
+              'closeWindow': time,
               'description': description,
               'invite': invite
             },

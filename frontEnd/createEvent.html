@@ -27,7 +27,7 @@
       </form>
       <form action="/action_page.php">
         Close
-        <input id="datetimeEnd" type="datetime-local" name="datetime" placeholder="Date/Time">
+        <input id="datetimeEnd" type="datetime-local" name="datetimeEnd" placeholder="Date/Time">
       </form>
       <input id="inviteList" class="textbox" type="textbox" placeholder="Invite List Emails (comma separated)">
     </div>
@@ -37,32 +37,41 @@
 
     <div><input id="btn" type="button" value="submit" onclick="submitNow()"/></div>
 
+    <script src="../lib/jquery-3.2.1.min.js"></script>
     <script>
     var fence; // global
+
       // send event data to server on click of submit button
       function submitNow() {
         var ne = window.fence.getBounds().getNorthEast();
         var sw = window.fence.getBounds().getSouthWest();
-        // alert(ne.lat() + " " + ne.lng() + " " + sw.lat() + " " + sw.lng());
 
-        var coords = '[' + ne.lat() + ", " + ne.lng() + ", " + sw.lat() + ", " + sw.lng() + ']';
+        var coords = ne.lat() + " " + ne.lng() + " " + sw.lat() + " " + sw.lng();
         var datetime = document.getElementById("datetime"); // open window
         var datetimeEnd = document.getElementById("datetimeEnd"); // close window
         var description = document.getElementById("description");
         var inviteRaw = document.getElementById("inviteList");
-        var invite = '[' + inviteRaw.value + ']';
+        var invite = inviteRaw.value.replace(/\s/g,'');
 
+
+        alert(invite);
+        // alert(datetimeEnd.value);
+        // alert(datetime.value);
+        // alert(description.value);
+        // alert(coords);
+
+        alert("FUCK");
         $.ajax({
             url: 'http://192.241.193.9:3001/createEvent',
             data: {
               'loc': coords,
               'openTime': datetime.value,
-              'closeTime': dateTimeEnd.value,
+              'closeTime': datetimeEnd.value,
               'description': description.value,
               'invite': invite
             },
             type: 'POST',
-            success: function(err, response, body) {
+            success: function(response) {
                 // alert("HELLO");
                 // var  = JSON.parse(body);
                 console.log(response);
@@ -82,12 +91,9 @@
 
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 10,
-          center: {lat: -25.363, lng: 131.044}
+          center: {lat: 39.9612, lng: -82.9988}
         });
-        var marker = new google.maps.Marker({
-          position: {lat: -25.363, lng: 131.044},
-          map: map
-        });
+
         map.addListener('click', addGeoFence);
 
 

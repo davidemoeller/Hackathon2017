@@ -24,14 +24,17 @@ def getAll():
     masterArray = []
     subArray = []
 
-    files = glob.glob('/users/*')
+    files = glob.glob('users/*.jsonl')
 
     for file in files:
         with open(file, 'r+') as fin:
                 for line in fin:
                     json_doc = json.loads(line)
+                    json_doc['name'] = file.strip('.jsonl')[6:]
                     subArray.append(json_doc)
+
         masterArray.append(subArray)
+        subArray = []
 
     message = jsonify(list=masterArray)
 

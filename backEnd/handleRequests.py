@@ -193,7 +193,7 @@ def createEvent():
     openTime = content['openTime']
     closeTime = content['closeTime']
     description = content['description']
-    invite = eval(content['invite'])
+    invite = content['invite'].split(',')
 
     uid = str(uuid.uuid4()).split('-')[0]
 

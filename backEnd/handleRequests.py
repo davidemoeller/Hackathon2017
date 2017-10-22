@@ -47,6 +47,8 @@ def login():
                         responseList.append(responseDict)
                 responseDict = {}
 
+
+    print(responseList)
     message = jsonify(list=responseList)
 
     resp = app.make_response(message)

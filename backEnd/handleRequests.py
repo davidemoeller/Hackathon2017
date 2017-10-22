@@ -36,9 +36,9 @@ def login():
 
     if len(eventList) > 0:
         with open('events.jsonl', 'r+') as fin:
-            for event in eventList:
-                for line in fin:
-                    json_doc = json.loads(line)
+            for line in fin:
+                json_doc = json.loads(line)
+                for event in eventList:
                     if event == json_doc['uuid']:
                         responseDict['uuid'] = event
                         loc = json_doc['events']['location'].split(' ')

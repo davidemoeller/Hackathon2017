@@ -124,8 +124,14 @@ def checkIn(obj):
         for line in fin:
             json_doc = json.loads(line)
             if json_doc['uuid'] == obj['uid']:
-                compareTime = datetime.datetime.strptime(json_doc['event']['openWindow'], "%m/%d/%Y %H:%M")
-                endTime = datetime.datetime.strptime(json_doc['event']['closeWindow'], "%m/%d/%Y %H:%M")
+                x = json_doc['event']['openWindow']
+                compareTime = datetime.datetime.strptime(
+                    x.split('-')[1] + '/' + x.split('-')[2].split('T')[0] + '/' + x.split('-')[0] + ' ' +
+                    x.split('-')[2].split('T')[1], "%m/%d/%Y %H:%M")
+                x = json_doc['event']['closeWindow']
+                endTime = datetime.datetime.strptime(
+                    x.split('-')[1] + '/' + x.split('-')[2].split('T')[0] + '/' + x.split('-')[0] + ' ' +
+                    x.split('-')[2].split('T')[1], "%m/%d/%Y %H:%M")
                 break
 
     if currentTime < compareTime:
@@ -184,7 +190,6 @@ def createEvent():
     print(content)
 
     location = content['loc']
-    date = content['date']
     openTime = content['openTime']
     closeTime = content['closeTime']
     description = content['description']
@@ -195,7 +200,7 @@ def createEvent():
     pdb.set_trace()
     createUserEvent(invite, uid)
 
-    doc = {'uuid': uid, 'event':{'attendList': [], 'absentList': [], 'location': location, 'date': date, 'openWindow': openTime, 'closeWindow': closeTime, 'description': description}}
+    doc = {'uuid': uid, 'event':{'attendList': [], 'absentList': [], 'location': location, 'openWindow': openTime, 'closeWindow': closeTime, 'description': description}}
 
     with open('event/events.jsonl', 'a') as fout:
         fout.write(json.dumps(doc) + '\n')

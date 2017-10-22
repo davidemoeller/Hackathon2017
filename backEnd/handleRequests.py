@@ -44,6 +44,8 @@ def getPerson():
 
     obj = request.form.to_dict()
 
+    print(obj)
+
     personData = []
 
     with open('users/' + obj['name'] + '.jsonl', 'r+') as fin:
@@ -62,6 +64,8 @@ def getEvent():
 
     obj = request.form.to_dict()
 
+    print(obj)
+
     with open('event/events.jsonl', 'r+') as fin:
         for line in fin:
             json_doc = json.loads(line)
@@ -79,6 +83,8 @@ def getEvent():
 def login():
 
     obj = request.form.to_dict()
+
+    print(obj)
 
     eventList = []
 
@@ -116,7 +122,10 @@ def login():
     return resp
 
 @app.route('/checkIn', methods=['POST'])
-def checkIn(obj):
+def checkIn():
+
+    obj = request.form.to_dict()
+    print(obj)
 
     currentTime = datetime.datetime.now();
 

@@ -24,7 +24,7 @@ def checkIn(obj):
 
     with open('events.jsonl', 'r+') as fin:
         for line in fin:
-            json_doc = json.loads(line):
+            json_doc = json.loads(line)
             if json_doc['uuid'] == obj['uid']:
                 compareTime = json_doc['event']['openWindow']
                 break

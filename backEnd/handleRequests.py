@@ -41,7 +41,7 @@ def login():
                 for event in eventList:
                     if event == json_doc['uuid']:
                         responseDict['uuid'] = event
-                        loc = json_doc['events']['location'].split(' ')
+                        loc = json_doc['event']['location'].split(' ')
                         responseDict['p1'] = loc[0]
                         responseDict['p2'] = loc[1]
                         responseDict['p3'] = loc[2]

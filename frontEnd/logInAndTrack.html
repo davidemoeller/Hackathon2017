@@ -1,0 +1,45 @@
+<html>
+  <head>
+    <style>
+    </style>
+  </head>
+  <body>
+    <h1>Log In</h1>
+    <input id="name" type="textbox" class="textbox" placeholder="Enter Name">
+    <input id="btn" type="button" value="submit" onclick="logIn()"/>
+
+    <script src="../lib/jquery-3.2.1.min.js"></script>
+    <script>
+
+      function compareLocation(currentLocation, north, west, south, east) {
+
+      }
+      function logIn() {
+        var username = document.getElementById("name").value;
+        alert(username);
+        $.ajax({
+            url: 'http://192.241.193.9:3001/login',
+            data: {
+              'name': username
+            },
+            type: 'POST',
+            success: function(err, response, body) {
+                // alert("HELLO");
+                // var  = JSON.parse(body);
+                console.log(err);
+                var response1 = JSON.stringify(body.responseJSON.list);
+                alert(response1);
+                while (response1.uuid != null) { // user is scheduled to attend event(s)
+                  // get current user location
+                  // compare with geoFence for each event in response1.uuid
+                }
+
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+      }
+    </script>
+  </body>
+</html>

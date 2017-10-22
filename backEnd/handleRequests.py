@@ -29,6 +29,8 @@ def login():
             json_doc = json.loads(line)
             eventList.append(json_doc['event'])
 
+    print(eventList)
+
     responseDict = {}
     responseList = []
 
@@ -39,7 +41,7 @@ def login():
                     json_doc = json.loads(line)
                     if event == json_doc['uuid']:
                         responseDict['uuid'] = event
-                        loc = json_doc['loc'].split(' ')
+                        loc = json_doc['events']['location'].split(' ')
                         responseDict['p1'] = loc[0]
                         responseDict['p2'] = loc[1]
                         responseDict['p3'] = loc[2]

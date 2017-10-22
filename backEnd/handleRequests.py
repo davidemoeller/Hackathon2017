@@ -197,7 +197,6 @@ def createEvent():
 
     uid = str(uuid.uuid4()).split('-')[0]
 
-    pdb.set_trace()
     createUserEvent(invite, uid)
 
     doc = {'uuid': uid, 'event':{'attendList': [], 'absentList': [], 'location': location, 'openWindow': openTime, 'closeWindow': closeTime, 'description': description}}

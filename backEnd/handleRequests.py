@@ -20,10 +20,20 @@ app = Flask(__name__)
 @app.route('/checkIn', methods=['POST'])
 def checkIn(obj):
 
-    with open(obj['name'] + '.jsonl', '+r') as fin:
+    currentTime = datetime.datetime.now();
+
+    with open('events.jsonl', 'r+') as fin:
         for line in fin:
-            json_doc = json.loads(line)
-            []
+            json_doc = json.loads(line):
+            if json_doc['uuid'] == obj['uid']:
+                compareTime = json_doc['event']['openWindow']
+                break
+
+    if currentTime < compareTime:
+        message = 'Not open yet'
+        return
+
+
     return
 
 def createUserEvent(obj, uid):
@@ -44,7 +54,7 @@ def createEvent():
     print(content)
 
     location = content['loc']
-    date = content['date']
+    date = datetime.datetime.strptime(content['date'], "%m/%d/%Y %H:%M")
     openTime = content['time']
     description = content['description']
     invite = eval(content['invite'])
@@ -54,11 +64,11 @@ def createEvent():
     pdb.set_trace()
     createUserEvent(invite, uid)
 
-    doc = {'location': location, 'date': date, 'openWindow': openTime, 'description': description}
+    doc = {'uuid': uid, 'event':{'location': location, 'date': date, 'openWindow': openTime, 'description': description}}
 
     with open('events.jsonl', 'a') as fout:
         fout.write(json.dumps(doc) + '\n')
-        
+
     message = 'Event successfully created with uuid: ' + uid
 
     resp = app.make_response(message)

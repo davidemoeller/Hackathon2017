@@ -45,7 +45,7 @@ def createEvent():
 
     location = content['loc']
     date = content['date']
-    open = content['time']
+    openTime = content['time']
     description = content['description']
     invite = eval(content['invite'])
 
@@ -54,11 +54,11 @@ def createEvent():
     pdb.set_trace()
     createUserEvent(invite, uid)
 
-    doc = {'location': location, 'date': date, 'openWindow': open, 'description': description}
+    doc = {'location': location, 'date': date, 'openWindow': openTime, 'description': description}
 
     with open('events.jsonl', 'a') as fout:
         fout.write(json.dumps(doc) + '\n')
-
+        
     message = 'Event successfully created with uuid: ' + uid
 
     resp = app.make_response(message)

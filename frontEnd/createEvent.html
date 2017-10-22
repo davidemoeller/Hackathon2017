@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+       #map {
+        height: 400px;
+        width: 100%;
+       }
+    </style>
+  </head>
+  <body>
+    <h3>My Google Maps Demo</h3>
+    <div id="map"></div>
+    <script>
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 10,
+          center: {lat: -25.363, lng: 131.044}
+        });
+        var marker = new google.maps.Marker({
+          position: {lat: -25.363, lng: 131.044},
+          map: map
+        });
+        map.addEventListener('click', addGeoFence);
+
+
+        // create a movable editable rectangle for event area geo fence
+        function addGeoFence(event) {
+          var clickLocationLat = event.latLng.lat();
+          var clickLocationLng = event.latLng.lng();
+          alert(clickLocationLat);
+          alert(clickLocationLng);
+          // var geoFence = new google.maps.Polygon({
+          //
+          // })
+        }
+    }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATRg7QT97jEQOaNjwwtMF7o-fnxdrGIxM&callback=initMap">
+    </script>
+  </body>
+</html>

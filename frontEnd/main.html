@@ -1,0 +1,53 @@
+<head>
+    <style>
+        .button {
+        width: 100px;
+        height: 100px;
+        border: solid 3px black;
+        border-radius: 23px;
+        display: block;
+        position: absolute;
+        top: 53%;
+        left: 45%;
+        display: block;
+        opacity: .75;
+    }
+
+      button:link, button:visited {
+      background-color: #e31d1a;
+      color: black;
+      border: 2px solid black;
+      padding: 20px 40px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+      button:hover, button:active {
+        background-color:#84bd00;
+        color: white;
+
+      }
+        a.button2 {
+        width: 100px;
+        height: 100px;
+        border: solid 3px black;
+        border-radius: 23px;
+        display: block;
+        position: absolute;
+        top: 88%;
+        left: 86%;
+        display: block;
+        opacity: .4;
+    }
+    </style>
+    <body>
+        <div>
+            <button type="button" class="button">Send to server!</button>
+            <button type="button2"><a class="button2" href="createEvent.html">Create Event</a></button>
+        </div>
+            <script src="../lib/jquery-3.2.1.min.js"></script>
+            <script src="serverCommunication.js"></script>
+            <!--<script src="createEvent.html"></script>-->
+    </body>
+</head>

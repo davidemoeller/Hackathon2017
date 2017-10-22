@@ -18,7 +18,9 @@ URL = 'http://192.241.193.9:3000'
 app = Flask(__name__)
 
 @app.route('/login', methods=['POST'])
-def login(obj):
+def login():
+
+    obj = request.form.to_dict()
 
     eventList = []
 

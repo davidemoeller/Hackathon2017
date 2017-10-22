@@ -41,6 +41,7 @@ def createUserEvent(obj, uid):
 def createEvent():
 
     content = request.form.to_dict()
+    print(content)
 
     location = content['loc']
     date = content['date']
